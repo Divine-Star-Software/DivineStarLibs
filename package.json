@@ -1,0 +1,47 @@
+{
+  "name": "dve",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "init:ds:binary": "cd ./divinestar/binary ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/binary/dist",
+    "init:ds:threads": "cd ./divinestar/threads ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/threads/dist",
+    "init:ds:utils": "cd ./divinestar/utils ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/utils/dist",
+    "init:ds:indexdb": "cd ./divinestar/indexdb ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/indexdb/dist",
+    "init:ds:audio": "cd ./divinestar/audio ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/audio/dist",
+    "init:ds:uri": "cd ./divinestar/uri ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/uri/dist",
+    "init:ds:controls": "cd ./divinestar/controls ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/controls/dist",
+    "init:ds:rng": "cd ./divinestar/rng ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/rng/dist",
+    "init:ds:all": "npm run init:ds:binary ; npm run init:ds:threads ; npm run init:ds:uri ; npm run init:ds:utils ; npm run init:ds:indexdb ; npm run init:ds:controls ; npm run init:ds:rng ; npm run ds:init:audio"
+  },
+  "author": "Divine Star Software",
+  "license": "MIT",
+  "workspaces": [
+    "divinevoxel/core/dist",
+    "divinestar/binary/dist",
+    "divinestar/threads/dist",
+    "divinestar/utils/dist",
+    "divinestar/indexdb/dist",
+    "divinestar\\audio\\dist",
+    "divinestar\\controls\\dist",
+    "divinestar\\rng\\dist",
+    "divinestar\\uri\\dist"
+  ],
+  "devDependencies": {
+    "@webgpu/types": "^0.1.40",
+    "jest": "^29.7.0",
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "postcss-loader": "^7.3.3",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.3",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "description": "",
+  "dependencies": {}
+}
