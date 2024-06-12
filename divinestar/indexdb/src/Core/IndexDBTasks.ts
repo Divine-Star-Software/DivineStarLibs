@@ -1,11 +1,11 @@
 import { ThreadComm } from "@divinestar/threads/";
-import { ZeneithDBCore } from "./ZeneithDBCore.js";
+import { IndexDBCore } from "./IndexDBCore.js";
 
 export function RegisterZeneithTasks() {
  ThreadComm.registerTasks<string>(
   "zdb-close-database",
   async (dbId, onDone) => {
-   const db = ZeneithDBCore.loadedDatabases[dbId];
+   const db = IndexDBCore.loadedDatabases[dbId];
    if (!db) return;
    await db.waitTillTranscationDone();
    db.close();
@@ -16,7 +16,7 @@ export function RegisterZeneithTasks() {
  ThreadComm.registerTasks<string>(
   "zdb-open-database",
   async (dbId, onDone) => {
-   const db = ZeneithDBCore.loadedDatabases[dbId];
+   const db = IndexDBCore.loadedDatabases[dbId];
    if (!db) return;
    await db.waitTillTranscationDone();
    db.open();

@@ -1,3 +1,3 @@
-export * from "./ZeneithDB/index.js";
-export * from "./ZeneithDB/Meta/index.js";
+export * from "./IndexDB"
+export * from "./Classes/index"
 

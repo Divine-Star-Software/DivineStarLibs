@@ -1,8 +1,7 @@
-import { DataBase } from "ZeneithDB/Database/Database.js";
-import { ZeneithDB } from "../ZeneithDB.js";
+import { IndexDB } from "../IndexDB.js";
 import { ThreadComm } from "@divinestar/threads";
 
-export class ZeneithError extends Error {
+export class IndexDBError extends Error {
  constructor(
   message: string,
   data: {
@@ -24,7 +23,7 @@ export class ZeneithError extends Error {
    ${message}`,
    data
   );
-  console.table(ZeneithDB.core.loadedDatabases);
+  console.table(IndexDB.core.loadedDatabases);
   console.groupEnd();
  }
 }

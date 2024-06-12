@@ -209,13 +209,32 @@ export class BinraryStructBase {
    * @param structArrayIndex - Default is the current index.
    * @returns
    */
-  instantiate<T extends  any>(): T &
-    InstantiatedStruct {
-    const strcutObject = new InstantiatedStruct();
-    strcutObject.setBuffer(this.getBuffer());
-    strcutObject.setIndex(this.structArrayIndex)
-    strcutObject.structSize = this.structSize;
-    strcutObject.structArrayIndexes = this.structArrayIndexes;
+  instantiate<T extends any>(): T & InstantiatedStruct<T> {
+    const self = this;
+
+    const GeneratedClass = class extends InstantiatedStruct<T> {
+      constructor() {
+        super();
+        this.setBuffer(self.getBuffer());
+        this.setIndex(self.structArrayIndex);
+        this.structSize = self.structSize;
+        this.structArrayIndexes = self.structArrayIndexes;
+      }
+
+      _bitArrays = new Map<string, number[]>();
+      _typedArrays = new Map<string, number[]>();
+    };
+
+    const cloneClass = () => {
+      return new GeneratedClass();
+    };
+
+    Object.defineProperty(GeneratedClass.prototype, "clone", {
+      get() {
+        return cloneClass;
+      },
+    });
+
     for (const [key, propertyByteIndex] of this.indexMap) {
       const [byteIndex, bitOffSet, bitSize, type] = getIndexData(
         this.index,
@@ -223,19 +242,19 @@ export class BinraryStructBase {
       );
 
       if (type == StructPropertyTypes.Boolean) {
-        Object.defineProperty(strcutObject, key, {
+        Object.defineProperty(GeneratedClass.prototype, key, {
           get() {
             return BinaryUtil.getBitValue(
-              strcutObject.data.getUint8(byteIndex + strcutObject.byteOffSet),
+              this.data.getUint8(byteIndex + this.byteOffSet),
               bitOffSet,
               bitSize
             );
           },
           set(value: number) {
-            strcutObject.data.setUint8(
-              byteIndex + strcutObject.byteOffSet,
+            this.data.setUint8(
+              byteIndex + this.byteOffSet,
               BinaryUtil.setBitValue(
-                strcutObject.data.getUint8(byteIndex + strcutObject.byteOffSet),
+                this.data.getUint8(byteIndex + this.byteOffSet),
                 bitOffSet,
                 value,
                 bitSize
@@ -245,18 +264,18 @@ export class BinraryStructBase {
         });
       }
       if (type == StructPropertyTypes.TypedNumber) {
-        Object.defineProperty(strcutObject, key, {
+        Object.defineProperty(GeneratedClass.prototype, key, {
           get() {
             return BinaryUtil.getTypedNumber(
-              strcutObject.data,
-              byteIndex + strcutObject.byteOffSet,
+              this.data,
+              byteIndex + this.byteOffSet,
               bitSize
             );
           },
           set(value: number) {
             BinaryUtil.setTypedNumber(
-              strcutObject.data,
-              byteIndex + strcutObject.byteOffSet,
+              this.data,
+              byteIndex + this.byteOffSet,
               bitSize,
               value
             );
@@ -264,62 +283,73 @@ export class BinraryStructBase {
         });
       }
       if (type == StructPropertyTypes.BitArray) {
-        Object.defineProperty(
-          strcutObject,
-          key,
-          new Proxy([], {
-            get(target, index) {
-     
-              return BinaryUtil.getBitArrayIndex(
-                strcutObject.data,
-                byteIndex + strcutObject.byteOffSet,
-                +(index as string)
-              );
-            },
-            set(target, index, value) {
-              BinaryUtil.setBitArrayIndex(
-                strcutObject.data,
-                byteIndex + strcutObject.byteOffSet,
-                +(index as string),
-                value
-              );
-              return true;
-            },
-          })
-        );
+        Object.defineProperty(GeneratedClass.prototype, key, {
+          get() {
+            const self = this as any;
+            if (!self._bitArrays.has(key)) {
+              const proxy = new Proxy([], {
+                get(target, index) {
+                  return BinaryUtil.getBitArrayIndex(
+                    self.data,
+                    byteIndex + self.byteOffSet,
+                    +(index as string)
+                  );
+                },
+                set(target, index, value) {
+                  BinaryUtil.setBitArrayIndex(
+                    self.data,
+                    byteIndex + self.byteOffSet,
+                    +(index as string),
+                    value
+                  );
+                  return true;
+                },
+              });
+              self._bitArrays.set(key, proxy);
+            }
+
+            return self._bitArrays.get(key)!;
+          },
+        });
       }
       if (type == StructPropertyTypes.TypedNumberArray) {
         const typedNumberSize = BinaryUtil.getTypedSize(bitSize);
-        Object.defineProperty(
-          strcutObject,
-          key,
-          new Proxy([], {
-            get(target, index) {
-              return BinaryUtil.getTypedNumber(
-                strcutObject.data,
-                byteIndex +
-                  strcutObject.byteOffSet +
-                  +(index as string) * typedNumberSize,
-                bitSize
-              );
-            },
-            set(target, index, value) {
-              BinaryUtil.setTypedNumber(
-                strcutObject.data,
-                byteIndex +
-                  strcutObject.byteOffSet +
-                  +(index as string) * typedNumberSize,
-                bitSize,
-                value
-              );
-              return true;
-            },
-          })
-        );
+
+        Object.defineProperty(GeneratedClass.prototype, key, {
+          get() {
+            const self = this as any;
+            if (!self._typedArrays.has(key)) {
+              const proxy = new Proxy([], {
+                get(target, index) {
+                  return BinaryUtil.getTypedNumber(
+                    self.data,
+                    byteIndex +
+                      self.byteOffSet +
+                      +(index as string) * typedNumberSize,
+                    bitSize
+                  );
+                },
+                set(target, index, value) {
+                  BinaryUtil.setTypedNumber(
+                    self.data,
+                    byteIndex +
+                      self.byteOffSet +
+                      +(index as string) * typedNumberSize,
+                    bitSize,
+                    value
+                  );
+                  return true;
+                },
+              });
+              self._typedArrays.set(key, proxy);
+            }
+
+            return self._typedArrays.get(key);
+          },
+        });
       }
     }
 
-    return strcutObject as InstantiatedStruct & T;
+    return new GeneratedClass() as any as InstantiatedStruct<T> & T;
   }
 }
-

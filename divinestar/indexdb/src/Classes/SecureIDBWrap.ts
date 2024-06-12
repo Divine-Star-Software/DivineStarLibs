@@ -1,5 +1,5 @@
 import { ThreadComm } from "@divinestar/threads";
-import { ZeneithDB } from "../ZeneithDB.js";
+import { IndexDB } from "../IndexDB.js";
 
 export class SecureIDBWrap {
  static dbs = new Map<string, IDBDatabase>();
@@ -18,7 +18,7 @@ export class SecureIDBWrap {
   }
   SecureIDBWrap.dbs.set(this.id, data)!;
 
-  ZeneithDB.core.dataBase.setData("meta", `${this.connectionId}-${id}`, {
+  IndexDB.core.dataBase.setData("meta", `${this.connectionId}-${id}`, {
    time: new Date().toLocaleTimeString(),
    dataBaseId: id,
    thread: {
@@ -35,6 +35,6 @@ export class SecureIDBWrap {
  null() {
   SecureIDBWrap.clear(this.id);
 
-  ZeneithDB.core.dataBase.removeData("meta", `${this.connectionId}-${this.id}`);
+  IndexDB.core.dataBase.removeData("meta", `${this.connectionId}-${this.id}`);
  }
 }

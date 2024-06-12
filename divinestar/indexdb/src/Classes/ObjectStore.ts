@@ -1,4 +1,4 @@
-import type { DataBase } from "../Database/Database.js";
+import type { DataBase } from "./Database.js";
 
 export class ObjectStore<K> {
  constructor(public db: DataBase, public id: string) {}
