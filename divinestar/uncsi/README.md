@@ -1,5 +1,5 @@
 <h1 align="center">
-@divinestar/uri
+@divinestar/uncsi
 </h1>
 
 <p align="center">
@@ -8,4 +8,4 @@
 
 ---
 
-URI (Universal Renderer Interface) is Library for abstracting away different rendering libraries. 
+UNCSI (Universal Node Component System Interface) is a library for the base of any ECS/NCS system. 

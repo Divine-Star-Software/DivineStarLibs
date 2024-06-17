@@ -20,12 +20,14 @@ export class DivineControls {
   static _capturingMode: "gamepad" | "keyboard" = "gamepad";
   static _capturedData: RecursivePartial<ControlInputData> | null = null;
   static mainUser: DCUser;
+  static controlRootElement: HTMLElement | Window = window;
   private constructor() {}
   static reInitControls = () => {};
   static clearControls = () => {};
 
   private static _initalized = false;
-  static init() {
+  static init(controlRootElement: HTMLElement | Window = window) {
+    this.controlRootElement = controlRootElement;
     if (this._initalized) return this;
     this._initalized = true;
     const { addListeners, removeListeners } = InitControls(this);

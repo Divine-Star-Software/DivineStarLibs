@@ -9,6 +9,7 @@
     "init:ds:indexdb": "cd ./divinestar/indexdb ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/indexdb/dist",
     "init:ds:audio": "cd ./divinestar/audio ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/audio/dist",
     "init:ds:uri": "cd ./divinestar/uri ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/uri/dist",
+    "init:ds:uncsi": "cd ./divinestar/uncsi ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/uncsi/dist",
     "init:ds:controls": "cd ./divinestar/controls ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/controls/dist",
     "init:ds:rng": "cd ./divinestar/rng ; npm run build ; cd ../../ ; npm init -y --scope @divinestar -w ./divinestar/rng/dist",
     "init:ds:all": "npm run init:ds:binary ; npm run init:ds:threads ; npm run init:ds:uri ; npm run init:ds:utils ; npm run init:ds:indexdb ; npm run init:ds:controls ; npm run init:ds:rng ; npm run ds:init:audio"
@@ -23,7 +24,8 @@
     "divinestar\\audio\\dist",
     "divinestar\\controls\\dist",
     "divinestar\\rng\\dist",
-    "divinestar\\uri\\dist"
+    "divinestar\\uri\\dist",
+    "divinestar\\uncsi\\dist"
   ],
   "devDependencies": {
     "@types/react": "^18.2.17",

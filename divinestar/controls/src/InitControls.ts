@@ -6,6 +6,7 @@ import { DCKeyDownEvent } from "./Events/Register";
 import { ControlsMap } from "./ControlsMap";
 
 export default function (controls: typeof DivineControls) {
+  const rootElement = controls.controlRootElement as HTMLElement;
   const user = DCUserManager.addUser(0);
   controls.mainUser = user;
   const heldKeys = new Set();
@@ -32,7 +33,7 @@ export default function (controls: typeof DivineControls) {
 
   const mouseDownListener = (event: MouseEvent) => {
     const button = ControlsMap.mapMoueButton(event.button);
-    console.log("mouse down listener",button)
+    console.log("mouse down listener", button);
     if (controls._capturing && controls._capturingMode == "keyboard") {
       controls._capturedData = {
         mouse: {
@@ -161,11 +162,11 @@ export default function (controls: typeof DivineControls) {
   const addListeners = () => {
     window.addEventListener("gamepadconnected", gamePadConnectionListener);
     window.addEventListener("gamepaddisconnected", gamePaddisconnectListener);
-    window.addEventListener("mousedown", mouseDownListener);
-    window.addEventListener("mouseup", mouseUp);
-    window.addEventListener("wheel", wheelListener);
-    window.addEventListener("keydown", keyDownListener);
-    window.addEventListener("keyup", keyUpListener);
+    rootElement.addEventListener("mousedown", mouseDownListener);
+    rootElement.addEventListener("mouseup", mouseUp);
+    rootElement.addEventListener("wheel", wheelListener);
+    rootElement.addEventListener("keydown", keyDownListener);
+    rootElement.addEventListener("keyup", keyUpListener);
   };
   const removeListeners = () => {
     window.removeEventListener("gamepadconnected", gamePadConnectionListener);
@@ -173,11 +174,11 @@ export default function (controls: typeof DivineControls) {
       "gamepaddisconnected",
       gamePaddisconnectListener
     );
-    window.removeEventListener("mousedown", mouseDownListener);
-    window.removeEventListener("mouseup", mouseUp);
-    window.removeEventListener("wheel", wheelListener);
-    window.removeEventListener("keydown", keyDownListener);
-    window.removeEventListener("keyup", keyUpListener);
+    rootElement.removeEventListener("mousedown", mouseDownListener);
+    rootElement.removeEventListener("mouseup", mouseUp);
+    rootElement.removeEventListener("wheel", wheelListener);
+    rootElement.removeEventListener("keydown", keyDownListener);
+    rootElement.removeEventListener("keyup", keyUpListener);
   };
 
   addListeners();
